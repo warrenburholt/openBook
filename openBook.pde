@@ -1,23 +1,36 @@
-float inc = 1;
+int pageAngle = 0;
+int angleChange = 5;
+final int ANGLE_LIMIT = 180;
 
 void setup()
 {
-
-size(200, 200, P3D);
-
-
+size(400, 400, P3D);
+smooth();
+frameRate(10);
 }
 
-void draw() {
-  background(0);
-  
-  frameRate(1);
+void draw()
+{
+  background(128);
   pushMatrix();
-  translate(width/2, height/2);
-  //inc += 0.01;
-  for (int x = 1; x < 20; x += 1) {
-  rotateY(PI/x);
-  rect(-26, -26, 52, 52);
+  translate(200,100); // place robot so arms are always on screen
+  drawBook();
+  pageAngle += angleChange;
+  
+  // if the arm has moved past its limit,
+  // reverse direction and set within limits.
+  if (pageAngle > ANGLE_LIMIT || pageAngle < 0)
+  {
+    angleChange = -angleChange;
+    pageAngle += angleChange;
   }
+  popMatrix();
+}
+
+void drawBook() {
+  pushMatrix();
+  //translate(200, 0);
+  rotateY(radians(pageAngle));
+  rect(0, 0, 200, 200);
   popMatrix();
 }
